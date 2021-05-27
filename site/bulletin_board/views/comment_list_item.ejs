@@ -1,0 +1,40 @@
+
+<li class="m-3 d-flex flex-row"> 
+   
+    <div class="">
+      <a href="/users/<%=comment.user_id%>">
+      <p class="m-0 font-weight-bold " style="color: #449989;"><%=comment.username %></p>
+      </a>
+        <div class="px-1 rounded ml-5" style="background:#637987;width:27rem;">
+            <p class="comment_message text-break m-0 p-1"><%=comment.comment %></p>
+        </div>
+           <div class="ml-5">
+                <p class="m-0 d-inline" style="color:#637987">
+                  <%= comment.date['value'] %> <%= comment.date['name'] %></p>
+                <p class="d-inline ml-1" style="color:#637987">Reply</p>
+           </div>
+           
+        </div>
+        <!--give the permision to the auther of the comment to see the options-->
+        <% if(comment.username==userName){ %>
+        <a  data-toggle="collapse" href='#options<%=comment.id%>' role="button"
+           aria-expanded="false" aria-controls="options" id="option" 
+           >
+          <span class="material-icons" style="color:#637987">
+            more_vert
+            </span>
+        </a>
+    <%}%>
+     <div class=" btn-group-sm btn-group collapse" id='options<%=comment.id%>'     role="group" data-id='<%=post.author %>' style="width: 2rem;">
+        <button type="click"  class=" remove_comment p-0" data-id='<%=comment.id %>' style="height: 1.7rem; background: rgba(245, 245, 245, 0);">
+            <span class="material-icons ">
+          delete
+          </span></button>
+        <button type="click" class=" border-top Edit_comment p-0" data-id='<%=comment.id %>' style="height: 1.7rem;background: rgba(245, 245, 245, 0);">
+            <span class="material-icons">
+          edit
+          </span>
+          </button>
+    </div> 
+ </li>
+

@@ -1,0 +1,104 @@
+<%- include('header', { title: 'Profile' }); %>
+<%- include('nav_bar', { id: null }); %>
+
+
+<div class=>
+    <div class="row">
+        <div class="col-6 col-md-3" style="background-color: #2E3841; padding-bottom: 30%;">
+            <div >
+                <img src= "<%= user.image_url %>" class="user-info-image">
+            </div>
+            <div class="profile_left_side_text">
+                <a style="color: white; font-size:20px;">
+                    <% if(user.firstName && user.lastName) { %> 
+                        <%= user.firstName + " " +  user.lastName%>
+                        <% }else{ %> 
+                        <%= user.username%>
+                        <% } %> 
+                    </div>               
+            <div class="profile_left_side_text">
+                <a>bio : </a>
+                <span> 
+                    <%if (user.bio){%>
+                        <%= user.bio %>
+                        <%}else{%>
+                        <%= "someone" %>
+                        <% } %>
+                </span>
+                </div>               
+                <div class="row">
+                    <div class="col-6">
+                        <div class="profile_left_side_text">
+                            <div>
+                            <a>join at</a>
+                            </div>
+                            <div>
+                            <a style="font-size: 10px; color: #637987;"><%= user.join_data %></a>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-6">
+                    <div class="profile_left_side_text">
+                        <div>
+                        <a>place</a>
+                        </div>
+                        <div>
+                        <a style="font-size: 10px; color: #637987">iraq</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile_left_side_text_emojy" style="padding-top: 10%;">
+                <i class='far fa-id-badge' style='font-size:20px'>
+                <span><%if (user.firstname){%>
+                    <%= user.firstname %>
+                    <%}else{%>
+                    <%= "privet" %>
+                    <% } %>
+
+                </span></i>
+            </div>
+            <div class="profile_left_side_text_emojy">
+                <i class='far fa-calendar-alt' style='font-size:20px'></i>
+                <span style=" font-size:20px ">
+                    <%if (user.birthdate){%>
+                        <%= user.birthdate %>
+                        <%}else{%>
+                        <%= "privet" %>
+                        <% } %>
+                </span>
+            </div>
+            <div class="profile_left_side_text_emojy">
+                <i class='far fa-heart' style='font-size:20px'></i>
+                <span  style=" font-size:20px ">
+                    <%if (user.gender){%>
+                        <%= user.gender %>
+                        <%}else{%>
+                        <%= "privet" %>
+                        <% } %>                </span>
+            </div>
+            <div>
+                <img src="https://i.ibb.co/McQjdQf/Group-1.png" alt="Group-1" class="profile_enter_image">    
+                </div>
+        </div>
+
+        <div class="col-12 col-md-9" style="background-color: #202D36;">
+            <div class="container py-5">
+                <div style="color: white;"><h2>Last Post</h2></div>
+                <div class="custom-scrollbar">
+                    <% posts.forEach(function(post){ %>
+                        <%- include('view_profile_poster', { post: post }); %>
+                      <% }); %>
+        </div>
+    </div>
+    <div style="color: white;"><h2>Post you like</h2></div>
+    <div class="custom-scrollbar">
+        <% posts_liked.forEach(function(post){ %>
+            <%- include('view_profile_poster', { post: post }); %>
+          <% }); %>
+
+</div>
+      </div>      
+</div>
+<%- include('footer', { javascript_uri: '/javascripts/view_post.js' }); %>

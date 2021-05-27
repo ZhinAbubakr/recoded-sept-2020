@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3');
 var db = new sqlite3.Database('./data/database.db');
-
+const moment=require('moment')
 var posts = {}
 
 /**
@@ -42,7 +42,8 @@ posts.retrieve = (id, userId, callback) => {
     callback({
       id: row.id,
       title: row.title,
-      author: row.user_id,
+      author: row.author,
+      authorid: row.authorid,
       date: row.date,
       liked: row.liked,
       url: "/posts/" + id,
@@ -51,6 +52,66 @@ posts.retrieve = (id, userId, callback) => {
   });
 };
 
+
+posts.retrieveperuser = (userId, callback) => {
+  var sql = `
+    SELECT
+      Posts.id AS id,
+      Posts.title,
+      Author.username AS author,
+      Author.id AS authorid,
+      Posts.date,
+      Posts.body AS body,
+      PostUpvotes.post_id IS NOT NULL AS liked,
+      '/posts/' + Posts.id AS url
+    FROM
+      Posts
+      INNER JOIN Users AS Author ON Posts.user_id = Author.id
+      LEFT OUTER JOIN PostUpvotes ON PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = Author.id
+    WHERE
+    Author.id = ?
+    ORDER BY
+      date DESC
+  `;
+  db.all(sql, [userId ], (err, rows) => {
+    if (err) {
+      callback([]);
+      return;
+    }
+    callback(rows);
+  });
+}
+
+
+
+posts.post_liked = (userId, callback) => {
+  var sql = `
+    SELECT
+      Posts.id AS id,
+      Posts.title,
+      Author.username AS author,
+      Author.id AS authorid,
+      Posts.date,
+      Posts.body AS body,
+      PostUpvotes.post_id IS NOT NULL AS liked,
+      '/posts/' + Posts.id AS url
+    FROM
+      Posts
+      INNER JOIN Users AS Author ON Posts.user_id = Author.id
+      INNER JOIN PostUpvotes ON PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = ?
+    WHERE
+    liked = 1
+    ORDER BY
+      date DESC
+  `;
+  db.all(sql, [userId], (err, rows) => {
+    if (err) {
+      callback([]);
+      return;
+    }
+    callback(rows);
+  });
+}
 /**
  * Retrieves a list of post excerpts for the most recent posts.
  * {
@@ -64,21 +125,24 @@ posts.retrieve = (id, userId, callback) => {
  */
 posts.recent = (userId, callback) => {
   var sql = `
-    SELECT
-      Posts.id AS id,
-      Posts.title,
-      Author.username AS author,
-      Posts.date,
-      PostUpvotes.post_id IS NOT NULL AS liked,
-      '/posts/' + Posts.id AS url,
-      substr(Posts.body, 0, 140) AS excerpt
-    FROM
-      Posts
-      INNER JOIN Users AS Author ON Posts.user_id = Author.id
-      LEFT OUTER JOIN PostUpvotes ON PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = ?
-    ORDER BY
-      Posts.id DESC
-    LIMIT 100
+  SELECT
+  Posts.id AS id,
+  Posts.title,
+  Author.username AS author,
+  Author.id AS authorid,
+  Posts.date,
+  PostUpvotes.post_id IS NOT NULL AS liked,
+  '/posts/' + Posts.id AS url,
+  substr(Posts.body, 0, 140) AS excerpt,
+  count(c.comment) as countComment
+FROM
+  Posts
+  INNER JOIN Users AS Author ON Posts.user_id = Author.id
+  LEFT OUTER JOIN PostUpvotes ON PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = ?
+  LEFT OUTER JOIN comments as c on posts.id==c.post_id GROUP BY posts.id
+  ORDER BY
+  Posts.id DESC
+LIMIT 100
   `;
   db.all(sql, [ userId ], (err, rows) => {
     if (err) {
@@ -109,20 +173,24 @@ posts.trending = (userId, callback) => {
   var thirtyDaysInSeconds = 30 * hoursPerDay * minutesPerHour * secondsPerMinute;
   var thirtyDaysAgo = timestamp - thirtyDaysInSeconds;
   var sql = `
-    SELECT
+  SELECT
       Posts.id AS id,
       Posts.title,
       Author.username AS author,
+      Author.id AS authorid,
       Posts.date,
+      Author.id AS authorid,
       PostUpvotes.post_id IS NOT NULL AS liked,
       '/posts/' + Posts.id AS url,
-      substr(Posts.body, 0, 140) AS excerpt
+      substr(Posts.body, 0, 140) AS excerpt,
+	  count(c.comment) as countComment
     FROM
       Posts
-      INNER JOIN Users AS Author ON Posts.user_id = Author.id
-      LEFT OUTER JOIN PostUpvotes ON PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = ?
-    WHERE
-      timestamp > ?
+      INNER JOIN Users AS Author   ON (Posts.user_id = Author.id)
+      LEFT OUTER JOIN PostUpvotes ON (PostUpvotes.post_id = Posts.id AND PostUpvotes.user_id = ?)
+	  LEFT OUTER JOIN comments as c on posts.id==c.post_id
+	 WHERE Posts.timestamp > ?
+   GROUP BY posts.id
     ORDER BY
       Posts.votes DESC
     LIMIT 100
@@ -221,5 +289,86 @@ posts.upvote = (id, user, vote, callback) => {
   });
 };
 
+
+function maniplateDate(date){
+  const now=moment()
+   //get date
+ const commentDate=moment(date)
+
+ //get diff
+ const yearDiff=now.diff(commentDate, 'year')
+ const monthDiff=now.diff(commentDate, 'month')
+ const daysDiff=now.diff(commentDate, 'days')
+ const hourDiff =now.diff(commentDate, 'hour')
+ const minuteDiff =now.diff(commentDate, 'minute')
+ const secDiff=now.diff(commentDate, 'second')
+ 
+ let duration
+ monthDiff<=12 && monthDiff!=0?duration= {value:monthDiff,name:'m'}:
+ daysDiff<=31 && daysDiff!=0?duration=  {value:daysDiff,name:'d'}:
+ hourDiff<=24 && hourDiff!=0?duration=  {value:hourDiff,name:'h'}:
+ minuteDiff<=60 && minuteDiff!=0?duration={value:minuteDiff,name:'min'}:
+ secDiff<=60 && secDiff!=0?duration={value:secDiff,name:"s"}:duration={value:'now',name:""}
+ 
+ return duration
+ 
+ }
+
+
+ //add comment
+ posts.addComment = (postId, user,comment, callback) => {
+  const sql = "INSERT INTO comments (comment,date,post_id,user_id) VALUES (?,?,?,?);"
+  const date=moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+  const params=[comment,date,postId,user.id]
+
+    let stmt = db.prepare(sql);
+     stmt.run(params, err => {
+      if (err) throw err;
+              let result = {
+                     user:user,
+                     id:stmt.lastID,
+                     comment:comment,
+                     date:maniplateDate(date)
+                 };       
+      callback(result)
+   }) 
+   stmt.finalize();
+
+ }
+
+
+posts.deleteComment=(comment_id,callback)=>{
+const sql = "DELETE FROM comments where comment_id=?;"
+db.all(sql,[comment_id], (err, comments) => {
+if (err) {
+  return console.error("error");
+}
+callback('success')
+});
+}
+//get the comment for each post
+posts.getComment=(post_id,callback)=>{
+
+const sql = " SELECT c.comment_id as id,c.comment,c.date ,u.username,c.user_id from comments c  INNER JOIN posts p on c.post_id==p.id INNER JOIN Users u on c.user_id==u.id WHERE c.post_id=?"
+db.all(sql,[post_id], (err, comments) => {
+ if (err) {
+   return console.error("error");
+ }
+// console.log(comments)
+ callback(comments.map(comment=>{comment.date=maniplateDate(comment.date)
+                       return comment}))
+});
+}
+
+posts.editComment=(comment,comment_id,callback)=>{
+const sql = " UPDATE comments SET comment=COALESCE(?,comment) WHERE comment_id = ?;"
+const params=[comment,comment_id]
+db.run(sql,params, (err) => {
+ if (err){
+ return console.error("error");
+ }
+ callback(comment)
+})
+}
 module.exports = posts;
 

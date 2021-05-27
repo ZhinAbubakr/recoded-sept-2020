@@ -14,6 +14,14 @@
   background-position: center;
 }
 
+
+.login-heading1{
+  color: #3AD89B;
+}
+
+
+
+
 .login-heading {
   font-weight: 300;
 }
@@ -24,6 +32,28 @@
   padding: 0.75rem 1rem;
   border-radius: 2rem;
 }
+
+
+/*for change password save&cancel btn*/
+.user-inprofile-info-Button{
+  display:  block;
+  width: 10px;
+  height: 40px;
+  background-color: #3AD89B;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 15px;
+  padding: 0 95px 0 48px;
+  margin-bottom: 5px;
+  display: inline-block;
+  margin-left: 100px;
+  margin-top: 20px;
+}
+
+
 
 .form-label-group {
   position: relative;
@@ -139,3 +169,231 @@
   margin-top: 0;
   color: #868e96;
 }
+
+.user-info-row{
+  background-color: #FDFDFD;
+  margin-top: 50px;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.user-info-image{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  width: 35%;
+  border-radius: 50%;
+
+}
+.user-info-text-main{
+position: relative;
+top: 30%;
+}
+
+h1{
+  font-family: "Roboto";
+  font-size: 30px;
+  color: #343A40;
+  }
+.user-info-Button
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
+  height: 35px;
+    background-color: #3AD89B;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 15px;
+    margin-top: 6%;
+    margin-bottom: 6%;
+}
+
+.button-contener
+{
+  margin-top: 10%;
+}
+.edit_input
+{
+  background-color: transparent;
+  color: #eeeeee;
+  outline: none;
+  outline-style: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid #41706A 1px;  
+}
+.profile_left_side_text
+{
+  display: block;
+  margin-left: 30%;
+  margin-right: auto;
+color: #CFD6DC;
+font-size: 14px;
+}
+.profile_left_side_text_emojy
+{
+  display: block;
+  margin-left: 13%;
+  margin-right: auto;
+  padding-top: 4%;
+color: #637987;
+font-size: 12px;
+
+}
+.profile_enter_image
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  
+}
+::placeholder {
+  color: #53AB92;
+}
+.profile_edit_element
+{
+  margin-top: auto;
+  margin-right: 20%;
+  margin-left: 7%;
+}
+.profile_edit_betweenelement
+{
+  margin-top: 10%;
+  margin-bottom: 30%;
+}
+.user-edit-image
+{
+  display: block;
+  border-radius: 10px;
+  width: 50%;
+}
+.user-photo-change-Button
+{
+  display: block;
+    width: 50%;
+  height: 35px;
+    background-color: #3AD89B;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 15px;
+    margin-top: 6%;
+    margin-bottom: 6%;
+}
+
+.profile-edit-icon
+{
+  color: #3AD89B;
+}
+.add_post_input
+{
+  background-color: transparent;
+  color: #eeeeee;
+  outline: none;
+  outline-style: none;
+  border-top: solid #41706A 3px;
+  border-left: solid #41706A 3px;
+  border-right: solid #41706A 3px;
+  border-bottom: solid #41706A 3px; 
+  border-radius: 10px; 
+  padding: 15px;
+  padding-right: 180px;
+
+}
+.user-inprofile-info-Button
+{
+  display: block;
+    width: 10%;
+  height: 35px;
+    background-color: #3AD89B;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 15px;
+
+}
+.custom-scrollbar
+{
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(6, calc(50% - 40px));
+  grid-template-rows: minmax(150px, 1fr);
+  padding: 0 20px;
+  overflow-x: scroll;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2E3841 ;
+  }
+  
+  /* Works on Chrome/Edge/Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #2E3841;
+    border-radius: 10px;
+    border: none;
+  }
+  body
+  {
+    background-color:#2E3841 ;
+  }
+.save-Button
+{
+  display: block;
+  width: 40%;
+height: 35px;
+  background-color: #3AD89B;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 15px;
+
+}
+
+/*style for change password*/
+.form1{
+  top: 180px;
+  width: 280px;
+  transition: .5s;
+  margin-left: 10px;
+}
+.test{
+  width: 100%;
+  padding: 10px 0;
+  margin: 5px 0;
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #999;
+  outline: none;
+  background: transparent;
+  color: #3AD89B;
+}
+span{
+  color: white;
+}
+.style input::-webkit-input-placeholder{
+  color: #3AD89B;
+  font-size: 14px;
+}
+

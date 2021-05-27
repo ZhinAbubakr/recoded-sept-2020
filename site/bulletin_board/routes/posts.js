@@ -25,7 +25,10 @@ router.get('/create', (req, res, next) => {
 /** EJS: The detailed view of a single post. */
 router.get('/:id', (req, res, next) => {
   datasource.retrieve(req.params['id'], req.user.id, (post) => {
-    res.render('view_post', { title: post.title, post: post });
+    datasource.getComment(req.params.id,(comments)=>{
+      
+      res.render('view_post', {title: post.title, post: post ,comments:comments,userName:req.user.username});
+     })
   });
 });
 
@@ -73,5 +76,31 @@ router.post('/:id/upvotes/', (req, res, next) => {
     res.send();
   });
 });
+
+
+ //add comment
+ router.post('/:id/comments/', (req,res)=>{
+  const {comment}=req.body
+   console.log(comment,'****',req.user)
+   datasource.addComment(req.params['id'], req.user,comment,(comment) => {
+    res.json(comment) 
+ })
+ })
+
+ router.delete('/comments/:id', (req,res)=>{
+  let comment_id=req.params.id
+   datasource.deleteComment(comment_id,(stat) => {
+    res.send(stat) 
+ })
+})
+
+router.put('/comments/:id', (req,res)=>{
+  const {comment}=req.body
+  const comment_id=req.params.id
+  datasource.editComment(comment,comment_id,(comment)=>{
+    res.json(comment)
+  })
+})
+
 
 module.exports = router;

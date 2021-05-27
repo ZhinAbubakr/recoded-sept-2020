@@ -1,4 +1,39 @@
 
+// Add information in profile
+
+function Editing_profiles(firstName, lastName,birthdate,bio,gender ,callback) {
+  var Editing = {
+    firstName: firstName,
+    lastName: lastName,
+    birthdate:birthdate, 
+    bio:bio,
+    gender:gender
+  };
+
+  $.ajax({
+      type: "POST",
+      url: "/users/Editing_profiles",
+      data: JSON.stringify(Editing),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(result){
+        callback({
+          success: true,
+          redirect_uri: result.redirect_uri
+        });
+      },
+      error: function(error) {
+        callback({
+          success: false,
+          redirect_uri: null,
+          error_message: 'Error '
+          
+        });
+      }
+  });
+}
+
+
 // Posts
 
 /**
@@ -146,3 +181,92 @@ function login(username, password, callback) {
       }
   });
 }
+
+
+/* changing password */
+
+function edit_password(new_password, old_password,confirm_password, callback) {
+  var user_password = {
+    oldPassword: old_password,
+    newPassword: new_password,
+    confirmPassword : confirm_password
+  };
+  $.ajax({
+      type: "POST",
+      url: "/users/edit_password/",
+      data: JSON.stringify(user_password),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(result){
+        callback({
+          success: true,
+          redirect_uri: result.redirect_uri
+        });
+      },
+      error: function(error) {
+        callback({
+          success: false,
+          redirect_uri: result.redirect_uri,
+          error_message: error.responseJSON.error_message
+        });
+      }
+  }
+  
+  )
+  ;
+}
+
+function create_comment(commentt,post_id,callback){
+
+  let  comment={
+    comment:commentt
+  }
+
+  $.ajax({
+    type: 'POST',
+    url: "/posts/"+post_id+"/comments",
+    data: JSON.stringify(comment),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data) {
+             callback(data)
+     },
+    error: function(error){
+      callback(error)
+    }
+  })
+}
+
+function remove_comment(comment_id,callback){
+  $.ajax({
+    type: 'DELETE',
+    url: "/posts/comments/"+comment_id,
+    success: function() {
+      callback()
+    },
+    error: function(error){
+      callback(error)
+    }
+  })
+}
+
+
+function edit_comment(comment_id,commentMessage,callback){
+  let  comment={
+       comment:commentMessage
+    }
+       $.ajax({
+       type: 'PUT', 
+       url: '/posts/comments/'+comment_id,
+       data: JSON.stringify(comment),
+       contentType: "application/json; charset=utf-8",
+       dataType: "json",
+       success: function(newComment) {
+       callback(newComment)
+       },
+       error: function(error){
+        callback(error)
+      }
+     })
+    }
+  

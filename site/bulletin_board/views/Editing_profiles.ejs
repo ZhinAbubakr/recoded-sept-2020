@@ -1,0 +1,90 @@
+
+  <div class="container py-5">
+    <div>
+        <h2  style="color: #fafafa;  font-family: 'Times New Roman', Times, serif; margin-left: 2%;">Setting</h2>
+    </div>
+   <div><nav class="navbar navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a style="color: #4CBC97; font-size: 20px;"  class="nav-link" id="viewinfoedit">Information <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #4D6476;font-size: 20px"class="nav-link" id="edit_password">Password</a>
+        </li>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+    <div  style="color: #202D36 !important;" class="row" id="editinfo">
+    <div class="col">
+        <div  class="profile_edit_element">
+        <div class="profile_edit_betweenelement">
+            <div><a style="color: white;">First Name</a></div>
+            <div><div class="input-group">
+                <input type="text" class="edit_input" id="profile_firstName" placeholder="First Name" aria-label="Amount (to the nearest dollar)">
+                <div class="input-group-append">
+                  <span class="profile-edit-icon"><i class="far fa-user" ></i></span>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div style="padding-top: 10%;"><a style="color: white;">Gender</a></div>
+    <div>  
+        <input type="checkbox" id="gender_male" value="Male" name="fooby[1][]">
+        <span><a style="color: #53AB92">Male</a></span>
+        <input type="checkbox" id="gender_female" value="Female" name="fooby[1][]" >
+        <span><a style="color: #53AB92">Female</a></span>
+      </div>
+    </div>
+    </div>
+    <div class="col">
+        <div class="profile_edit_betweenelement">
+        <div><a style="color: white;">Last Name</a></div>
+        <div><div class="input-group">
+            <input type="text" class="edit_input" id="profile_lastName" aria-label="Amount (to the nearest dollar)" placeholder="Last Name">
+            <div class="input-group-append">
+                <span class="profile-edit-icon"><i class="far fa-user" ></i></span>
+            </div> 
+        </div>
+    </div>
+</div>
+<div>
+    <div><a style="color: white;">Birthday</a></div>
+    <div><div class="input-group">
+        <input type="date" class="edit_input" id="profile_birthdate" aria-label="Amount (to the nearest dollar)" placeholder="Birthday">
+        <div class="input-group-append">
+            <span class="profile-edit-icon"><i class="far fa-calendar-alt"></i></span>
+        </div> 
+    </div>
+</div>
+</div>
+
+</div>
+<div class="col">
+        <div class="profile_edit_betweenelement">
+            <div><a style="color: white;">Bio</a></div>
+            <div><div class="input-group">
+                <input type="text" class="edit_input"  id="profile_bio" aria-label="Amount (to the nearest dollar)" placeholder="Bio">
+                <div class="input-group-append">
+                    <span class="profile-edit-icon"><i class="far fa-file-alt"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div>
+      <button type="button" id="save-Button" class="save-Button">Save</button> 
+      </div>
+  </div>
+  </div>
+  <div id="passwordpageview" style="display: none;">
+    <%- include('user_edit_password'); %>
+  </div>
+</div>
+<%- include('footer', { javascript_uri: '/javascripts/Editing_Profiles.js' }); %>

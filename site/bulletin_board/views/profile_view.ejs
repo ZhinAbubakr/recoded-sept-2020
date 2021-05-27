@@ -1,0 +1,126 @@
+<%- include('header', { title: 'Profile' }); %>
+<%- include('nav_bar', { id: "Profile" }); %>
+
+
+<div class=>
+    <div class="row">
+        <div class="col-6 col-md-3" style="background-color: #2E3841; padding-bottom: 30%;">
+            <div >
+                <img src= "<%= user.image_url %>" class="user-info-image">
+            </div>
+            <button type="button" class="user-info-Button" id= "user_edit_button">Edit Profile</button>
+
+            <div class="profile_left_side_text">
+
+                <a style="color: white; font-size:20px;">
+                    <% if(user.firstName && user.lastName) { %> 
+                    <%= user.firstName + " " +  user.lastName%>
+                    <% }else{ %> 
+                    <%= user.username%>
+                    <% } %> 
+                </a>
+                </div>               
+            <div class="profile_left_side_text">
+                <a>bio</a>
+                <span>
+                    <%if (user.bio){%>
+                    <%= user.bio %>
+                    <%}else{%>
+                    <%= "someone" %>
+                    <% } %>
+                </span>
+                </div>               
+                <div class="row">
+                    <div class="col-6">
+                        <div class="profile_left_side_text">
+                            <div>
+                            <a>join at</a>
+                            </div>
+                            <div>
+                            <a style="font-size: 10px; color: #637987;"><%= user.join_data %></a>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-6">
+                    <div class="profile_left_side_text">
+                        <div>
+                        <a>place</a>
+                        </div>
+                        <div>
+                        <a style="font-size: 10px; color: #637987">iraq</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile_left_side_text_emojy" style="padding-top: 10%;">
+                <i class='far fa-id-badge' style='font-size:20px'>
+                <span><%if (user.firstName){%>
+                    <%= user.firstName %>
+                    <%}else{%>
+                    <%= "privet" %>
+                    <% } %>
+
+                </span></i>
+            </div>
+            <div class="profile_left_side_text_emojy">
+                <i class='far fa-calendar-alt' style='font-size:20px'></i>
+                <span style=" font-size:20px ">
+                    <%if (user.birthdate){%>
+                        <%= user.birthdate %>
+                        <%}else{%>
+                        <%= "privet" %>
+                        <% } %>
+                </span>
+            </div>
+            <div class="profile_left_side_text_emojy">
+                <i class='far fa-heart' style='font-size:20px'></i>
+                <span  style=" font-size:20px ">
+                    <%if (user.gender){%>
+                        <%= user.gender %>
+                        <%}else{%>
+                        <%= "privet" %>
+                        <% } %>                
+                    </span>
+            </div>
+            <div>
+                <img src="https://i.ibb.co/McQjdQf/Group-1.png" alt="Group-1" class="profile_enter_image">    
+                </div>
+            <div>
+                <a href="/"><button  type="button" class="user-info-Button" >Log out</button> </a>
+                </div>       
+        </div>
+        <div class="col-12 col-md-9" style="background-color: #202D36;">
+            <div id = "user_information" >
+
+            <div class="container py-5">
+            <form id="post_form">
+                <div style="color: white;"><h2>Make New Post</h2></div>
+                <div style="padding-bottom: 10px;"><textarea class="add_post_input" placeholder="title" aria-label="Amount (to the nearest dollar)" id="post_title" required></textarea></div>
+                <div style="padding-bottom: 10px;"><textarea style="padding-bottom: 30px;" class="add_post_input" placeholder="body" id="post_message" aria-label="Amount (to the nearest dollar)" required></textarea></div>
+          <button class="user-inprofile-info-Button" type="submit" id="post_button" style="margin-bottom: 10px;">Post</button>
+            </form>
+                <div style="color: white;"><h2>Last Post</h2></div>
+                <div class="custom-scrollbar">
+                    <% posts.forEach(function(post){ %>
+                        <%- include('view_profile_poster', { post: post }); %>
+                      <% }); %>
+                </div>
+                <div style="color: white;"><h2>Post you like</h2></div>
+                <div class="custom-scrollbar">
+                    <% posts_liked.forEach(function(post){ %>
+                        <%- include('view_profile_poster', { post: post }); %>
+                    <% }); %>
+                </div>
+
+            </div>
+        </div>   
+        <div id="user_editing" style="display: none;">
+            <%- include('Editing_profiles'); %>
+        </div>
+
+      </div>   
+</div>
+<%- include('footer', { javascript_uri: '/javascripts/create_post.js' }); %>
+
+<%- include('footer', { javascript_uri: '/javascripts/view_post.js' }); %>

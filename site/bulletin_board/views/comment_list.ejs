@@ -1,0 +1,7 @@
+
+
+<ul id="display_comments" class="pb-2">
+    <% comments.forEach(comment =>{ %>
+        <%- include('comment_list_item', {post,comment,userName});%>
+    <%}) %>
+</ul> 
